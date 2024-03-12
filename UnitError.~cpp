@@ -1,0 +1,45 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "UnitError.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TFormError *FormError;
+//---------------------------------------------------------------------------
+__fastcall TFormError::TFormError(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+RWS rwsE;
+
+//---------------------------------------------------------------------------
+
+void __fastcall TFormError::Exit1Click(TObject *Sender)
+{
+        FormError->Hide();        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormError::Error21Click(TObject *Sender)
+{
+        rwsE.error2();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormError::Error11Click(TObject *Sender)
+{
+        rwsE.error1();        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormError::BtnErrorExitClick(TObject *Sender)
+{
+        FormError->Hide();
+}
+//---------------------------------------------------------------------------
+

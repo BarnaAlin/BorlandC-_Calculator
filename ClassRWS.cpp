@@ -1,0 +1,394 @@
+//---------------------------------------------------------------------------
+#include "ClassRWS.h"
+
+//---------------------------------------------------------------------------
+ 
+RWS::RWS()
+{
+}                                    
+//******************************************************************************
+
+RWS::RWS(string fileName):CFILE(fileName)
+{
+}
+//******************************************************************************
+// Pentru Form Calculator
+//******************************************************************************
+
+void RWS::RW_Expression()
+{
+	read();
+        FormCalculator->EditCExp->Text=sir[0];
+}
+//******************************************************************************
+
+void RWS::SW_Expression()
+{
+        FormCalculator->EditCRes->Clear();
+
+        if(FormCalculator->EditCExp->Text=="") return;
+
+	expression=EXPRESSION((FormCalculator->EditCExp->Text).c_str());
+        RadianVsDegrees();
+
+        FormCalculator->EditCRes->Text=expression.evaluare();
+        if(expression.error)
+                FormCalculator->EditCRes->Text=expression.msgError.c_str();
+}
+//******************************************************************************
+// Pentru Form More Expressions
+//******************************************************************************
+
+void RWS::RW_MoreExps()
+{
+        ClearME_Exps();
+
+        readMore();
+
+        FormMoreExps->EditMEExp0->Text=sir[0];
+        FormMoreExps->EditMEExp1->Text=sir[1];
+        FormMoreExps->EditMEExp2->Text=sir[2];
+        FormMoreExps->EditMEExp3->Text=sir[3];
+        FormMoreExps->EditMEExp4->Text=sir[4];
+        FormMoreExps->EditMEExp5->Text=sir[5];
+        FormMoreExps->EditMEExp6->Text=sir[6];
+        FormMoreExps->EditMEExp7->Text=sir[7];
+        FormMoreExps->EditMEExp8->Text=sir[8];
+        FormMoreExps->EditMEExp9->Text=sir[9];
+}
+//************************************************************************
+
+void RWS::SW_MoreExps()
+{
+        ClearME_Res();
+
+        expression=EXPRESSION((FormMoreExps->EditMEExp0->Text).c_str());
+        RadianVsDegrees();
+        FormMoreExps->EditMERes0->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes0->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp1->Text.c_str();
+        FormMoreExps->EditMERes1->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes1->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp2->Text.c_str();
+        FormMoreExps->EditMERes2->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes2->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp3->Text.c_str();
+        FormMoreExps->EditMERes3->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes3->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp4->Text.c_str();
+        FormMoreExps->EditMERes4->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes4->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp5->Text.c_str();
+        FormMoreExps->EditMERes5->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes5->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp6->Text.c_str();
+        FormMoreExps->EditMERes6->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes6->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp7->Text.c_str();
+        FormMoreExps->EditMERes7->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes7->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp8->Text.c_str();
+        FormMoreExps->EditMERes8->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes8->Text=expression.msgError.c_str();
+
+        expression.expression=FormMoreExps->EditMEExp9->Text.c_str();
+        FormMoreExps->EditMERes9->Text=expression.evaluare();
+        if(expression.error)
+                FormMoreExps->EditMERes9->Text=expression.msgError.c_str();
+}
+//******************************************************************************
+// History
+//******************************************************************************
+
+void RWS::History()
+{
+        ctHistory=ctHistory%10;
+        switch(ctHistory)
+        {
+                case 0:
+                        FormHistory->EditHExp0->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes0->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 1:
+                        FormHistory->EditHExp1->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes1->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 2:
+                        FormHistory->EditHExp2->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes2->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 3:
+                        FormHistory->EditHExp3->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes3->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 4:
+                        FormHistory->EditHExp4->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes4->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 5:
+                        FormHistory->EditHExp5->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes5->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 6:
+                        FormHistory->EditHExp6->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes6->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 7:
+                        FormHistory->EditHExp7->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes7->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 8:
+                        FormHistory->EditHExp8->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes8->Text=FormCalculator->EditCRes->Text;
+                        break;
+                case 9:
+                        FormHistory->EditHExp9->Text=FormCalculator->EditCExp->Text;
+                        FormHistory->EditHRes9->Text=FormCalculator->EditCRes->Text;
+                        break;
+                default:
+                        break;
+        }
+         ctHistory++;
+}
+//******************************************************************************
+
+void RWS::HistoryME()
+{
+        FormHistoryME->EditHMEExp0->Text=FormMoreExps->EditMEExp0->Text;
+        FormHistoryME->EditHMERes0->Text=FormMoreExps->EditMERes0->Text;
+
+        FormHistoryME->EditHMEExp1->Text=FormMoreExps->EditMEExp1->Text;
+        FormHistoryME->EditHMERes1->Text=FormMoreExps->EditMERes1->Text;
+
+        FormHistoryME->EditHMEExp2->Text=FormMoreExps->EditMEExp2->Text;
+        FormHistoryME->EditHMERes2->Text=FormMoreExps->EditMERes2->Text;
+
+        FormHistoryME->EditHMEExp3->Text=FormMoreExps->EditMEExp3->Text;
+        FormHistoryME->EditHMERes3->Text=FormMoreExps->EditMERes3->Text;
+
+        FormHistoryME->EditHMEExp4->Text=FormMoreExps->EditMEExp4->Text;
+        FormHistoryME->EditHMERes4->Text=FormMoreExps->EditMERes4->Text;
+
+        FormHistoryME->EditHMEExp5->Text=FormMoreExps->EditMEExp5->Text;
+        FormHistoryME->EditHMERes5->Text=FormMoreExps->EditMERes5->Text;
+
+        FormHistoryME->EditHMEExp6->Text=FormMoreExps->EditMEExp6->Text;
+        FormHistoryME->EditHMERes6->Text=FormMoreExps->EditMERes6->Text;
+
+        FormHistoryME->EditHMEExp7->Text=FormMoreExps->EditMEExp7->Text;
+        FormHistoryME->EditHMERes7->Text=FormMoreExps->EditMERes7->Text;
+
+        FormHistoryME->EditHMEExp8->Text=FormMoreExps->EditMEExp8->Text;
+        FormHistoryME->EditHMERes8->Text=FormMoreExps->EditMERes8->Text;
+
+        FormHistoryME->EditHMEExp9->Text=FormMoreExps->EditMEExp9->Text;
+        FormHistoryME->EditHMERes9->Text=FormMoreExps->EditMERes9->Text;
+}
+//******************************************************************************
+void RWS::LabelHistory()
+{
+        if(FormCalculator->EditCExp->Text!="")
+                FormCalculator->LabelCLastExp->Caption=FormCalculator->EditCExp->Text;
+}
+//******************************************************************************
+// Clear
+//******************************************************************************
+void RWS::ClearHistory()
+{
+        FormHistory->EditHExp0->Clear();
+        FormHistory->EditHExp1->Clear();
+        FormHistory->EditHExp2->Clear();
+        FormHistory->EditHExp3->Clear();
+        FormHistory->EditHExp4->Clear();
+        FormHistory->EditHExp5->Clear();
+        FormHistory->EditHExp6->Clear();
+        FormHistory->EditHExp7->Clear();
+        FormHistory->EditHExp8->Clear();
+        FormHistory->EditHExp9->Clear();
+
+        FormHistory->EditHRes0->Clear();
+        FormHistory->EditHRes1->Clear();
+        FormHistory->EditHRes2->Clear();
+        FormHistory->EditHRes3->Clear();
+        FormHistory->EditHRes4->Clear();
+        FormHistory->EditHRes5->Clear();
+        FormHistory->EditHRes6->Clear();
+        FormHistory->EditHRes7->Clear();
+        FormHistory->EditHRes8->Clear();
+        FormHistory->EditHRes9->Clear();
+
+        ctHistory=0;
+}
+//******************************************************************************
+void RWS::ClearHistoryME()
+{
+        FormHistoryME->EditHMEExp0->Clear();
+        FormHistoryME->EditHMEExp1->Clear();
+        FormHistoryME->EditHMEExp2->Clear();
+        FormHistoryME->EditHMEExp3->Clear();
+        FormHistoryME->EditHMEExp4->Clear();
+        FormHistoryME->EditHMEExp5->Clear();
+        FormHistoryME->EditHMEExp6->Clear();
+        FormHistoryME->EditHMEExp7->Clear();
+        FormHistoryME->EditHMEExp8->Clear();
+        FormHistoryME->EditHMEExp9->Clear();
+
+        FormHistoryME->EditHMERes0->Clear();
+        FormHistoryME->EditHMERes1->Clear();
+        FormHistoryME->EditHMERes2->Clear();
+        FormHistoryME->EditHMERes3->Clear();
+        FormHistoryME->EditHMERes4->Clear();
+        FormHistoryME->EditHMERes5->Clear();
+        FormHistoryME->EditHMERes6->Clear();
+        FormHistoryME->EditHMERes7->Clear();
+        FormHistoryME->EditHMERes8->Clear();
+        FormHistoryME->EditHMERes9->Clear();
+
+}
+//******************************************************************************
+
+void RWS::ClearME_Exps()
+{
+        FormMoreExps->EditMEExp0->Clear();
+        FormMoreExps->EditMEExp1->Clear();
+        FormMoreExps->EditMEExp2->Clear();
+        FormMoreExps->EditMEExp3->Clear();
+        FormMoreExps->EditMEExp4->Clear();
+        FormMoreExps->EditMEExp5->Clear();
+        FormMoreExps->EditMEExp6->Clear();
+        FormMoreExps->EditMEExp7->Clear();
+        FormMoreExps->EditMEExp8->Clear();
+        FormMoreExps->EditMEExp9->Clear();
+}
+//******************************************************************************
+
+void RWS::ClearME_Res()
+{
+        FormMoreExps->EditMERes0->Clear();
+        FormMoreExps->EditMERes1->Clear();
+        FormMoreExps->EditMERes2->Clear();
+        FormMoreExps->EditMERes3->Clear();
+        FormMoreExps->EditMERes4->Clear();
+        FormMoreExps->EditMERes5->Clear();
+        FormMoreExps->EditMERes6->Clear();
+        FormMoreExps->EditMERes7->Clear();
+        FormMoreExps->EditMERes8->Clear();
+        FormMoreExps->EditMERes9->Clear();
+}
+//******************************************************************************
+// Radian Vs Degrees
+//******************************************************************************
+void RWS::RadianVsDegrees()
+{
+        if(FormCalculator->CheckBoxCRadian->Checked==false)
+                expression.radian=false;
+}
+//******************************************************************************
+//******************************************************************************
+
+void RWS::writeToFile()
+{
+        string exp = (FormCalculator->EditCExp->Text+" = "+FormCalculator->EditCRes->Text).c_str();
+        write(exp);
+}
+
+void RWS::writeToFileME()
+{
+        string exp ;
+        if(FormMoreExps->EditMEExp0->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp0->Text+" = "+FormMoreExps->EditMERes0->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp1->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp1->Text+" = "+FormMoreExps->EditMERes1->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp2->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp2->Text+" = "+FormMoreExps->EditMERes2->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp3->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp3->Text+" = "+FormMoreExps->EditMERes3->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp4->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp4->Text+" = "+FormMoreExps->EditMERes4->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp5->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp5->Text+" = "+FormMoreExps->EditMERes5->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp6->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp6->Text+" = "+FormMoreExps->EditMERes6->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp7->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp7->Text+" = "+FormMoreExps->EditMERes7->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp8->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp8->Text+" = "+FormMoreExps->EditMERes8->Text).c_str();
+                write(exp);
+        }
+        if(FormMoreExps->EditMEExp9->Text!="")
+        {
+                exp = (FormMoreExps->EditMEExp9->Text+" = "+FormMoreExps->EditMERes9->Text).c_str();
+                write(exp);
+        }
+}
+
+//******************************************************************************
+//errors
+//******************************************************************************
+void RWS::error2()
+{
+        FormError->LabelError->Caption="Error 2";
+        FormError->MemoError->Clear();
+        FormError->MemoError->Lines->Add("      Urmatoarele functii trigonometrice au");
+        FormError->MemoError->Lines->Add("domeniul de definitie restrans:");
+        FormError->MemoError->Lines->Add("");
+        FormError->MemoError->Lines->Add("      tg: R\{(k+1)/2 *PI} --> R");
+        FormError->MemoError->Lines->Add("      ctg: R\{ k*PI --> R}");
+        FormError->MemoError->Lines->Add("");
+        FormError->MemoError->Lines->Add("      asin: [-1,1] --> [- PI/2 ; PI/2]");
+        FormError->MemoError->Lines->Add("      acos: [-1,1] --> [ 0 ; PI]");
+}
+//******************************************************************************
+void RWS::error1()
+{
+        FormError->LabelError->Caption="Error 1";
+        FormError->MemoError->Clear();
+        FormError->MemoError->Lines->Add("      Posibilile cauze ale acestei erorii sunt:");
+        FormError->MemoError->Lines->Add("");
+        FormError->MemoError->Lines->Add("Folosirea incorecta a parantezelor.");
+        FormError->MemoError->Lines->Add("Lipsa unui termen");
+}
+
+//******************************************************************************
